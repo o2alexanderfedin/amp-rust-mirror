@@ -1,6 +1,6 @@
 use super::*;
-use crate::{__builtin___memcpy_chk, __builtin_object_size, malloc};
 use crate::src::amp_h::AmpT;
+use crate::{__builtin___memcpy_chk, __builtin_object_size, malloc};
 
 ///Write u32be.
 extern "C" fn write_u32_be(buf: *mut i8, n: u32) -> () {
@@ -38,10 +38,16 @@ pub(crate) extern "C" fn amp_decode_arg(msg: &mut AmpT) -> *mut i8 {
         *__p = unsafe { (*__p).offset(__n as isize) };
     };
     let buf: *mut i8 = unsafe { malloc(len as u64) } as *mut i8;
-    if (buf).is_null() as i32 != 0 { return 0 as *mut () as *mut i8; }
+    if (buf).is_null() as i32 != 0 {
+        return 0 as *mut () as *mut i8;
+    }
     unsafe {
-        __builtin___memcpy_chk(buf as *mut (), (*msg).buf as *const (),
-            len as u64, unsafe { __builtin_object_size(buf as *const (), 0) })
+        __builtin___memcpy_chk(
+            buf as *mut (),
+            (*msg).buf as *const (),
+            len as u64,
+            unsafe { __builtin_object_size(buf as *const (), 0) },
+        )
     };
     {
         let __n = len;

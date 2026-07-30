@@ -136,11 +136,7 @@ pub(crate) extern "C" fn __main_inner() -> i32 {
                 }
                 break '__c0;
             }
-            {
-                let __p = &mut i;
-                *__p += 1;
-                *__p
-            };
+            i += 1;
         }
     }
     unsafe { printf(c"ok\n".as_ptr() as *mut i8 as *const i8) };
